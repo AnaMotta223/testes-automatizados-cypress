@@ -31,14 +31,11 @@ Cypress.Commands.add("login", (username, password) => {
   cy.get('[data-test="login-button"]').click();
 });
 
-// Login com cache de sessão (mais rápido nos testes que não testam o login em si)
 Cypress.Commands.add("loginWithSession", (username, password) => {
   cy.session([username, password], () => {
     cy.login(username, password);
     cy.url().should("include", "/inventory.html");
   });
 
-  // cy.session deixa a página em branco, então precisa visitar de novo.
-  // failOnStatusCode: false porque o servidor responde 404 em acesso direto.
   cy.visit("/inventory.html", { failOnStatusCode: false });
 });
